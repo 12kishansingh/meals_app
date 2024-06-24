@@ -7,14 +7,23 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:meals_app/meal_item_trait.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem({super.key, required this.meal});
-  final Meal meal;
+  const MealItem({
+    super.key,
+    required this.meal,
+    required this.onSelectMeal,
+  });
 
-  String get complexityText{
-    return meal.complexity.name[0].toUpperCase()+meal.complexity.name.substring(1);
+  final Meal meal;
+  final void Function(Meal meal) onSelectMeal;
+
+  String get complexityText {
+    return meal.complexity.name[0].toUpperCase() +
+        meal.complexity.name.substring(1);
   }
-String get affordabilityText{
-    return meal.affordability.name[0].toUpperCase()+meal.affordability.name.substring(1);
+
+  String get affordabilityText {
+    return meal.affordability.name[0].toUpperCase() +
+        meal.affordability.name.substring(1);
   }
 
   @override
@@ -22,14 +31,14 @@ String get affordabilityText{
     return Card(
       margin: const EdgeInsets.all(8),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          8,
-        ),
+        borderRadius: BorderRadius.circular(8),
       ),
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onSelectMeal(meal);
+        },
         child: Stack(
           children: [
             FadeInImage(
@@ -53,10 +62,8 @@ String get affordabilityText{
                       meal.title,
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      softWrap:
-                          true, // so that text wrapped in good looking way
-                      overflow: TextOverflow
-                          .ellipsis, // when there overflow of words,replaced by three dot(...)
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis, // Very long text ...
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -66,26 +73,27 @@ String get affordabilityText{
                     const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      
                       children: [
                         MealItemTrait(
-                            icon: Icons.schedule,
-                            label: '${meal.duration} min'),
-                      const SizedBox(width: 12,),
-                       MealItemTrait(
-                            icon: Icons.work,
-                            label: complexityText),
-                      const SizedBox(width: 12,),
-                       MealItemTrait(
-                            icon: Icons.attach_money,
-                            label: affordabilityText),
-
+                          icon: Icons.schedule,
+                          label: '${meal.duration} min',
+                        ),
+                        const SizedBox(width: 12),
+                        MealItemTrait(
+                          icon: Icons.work,
+                          label: complexityText,
+                        ),
+                        const SizedBox(width: 12),
+                        MealItemTrait(
+                          icon: Icons.attach_money,
+                          label: affordabilityText,
+                        )
                       ],
                     ),
                   ],
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
