@@ -2,18 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:meals_app/meal.dart';
 
 class MealDetailsScreen extends StatelessWidget {
-  const MealDetailsScreen({super.key, required this.meal});
+  const MealDetailsScreen({
+    super.key,
+    required this.meal,
+    required this.onToggleFavorite,
+  });
+
   final Meal meal;
+  final void Function(Meal meal) onToggleFavorite;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            meal.title,
-          ),
-        ),
+        appBar: AppBar(title: Text(meal.title), actions: [
+          IconButton(
+            onPressed: () {
+              onToggleFavorite(meal);
+            },
+            icon: const Icon(Icons.star),
+          )
+        ]),
         body: SingleChildScrollView(
-          child: Column(// instead of clolumn use List View (its not centered) which gives auto scroll but singlechildscroolveiw gives
+          child: Column(
             children: [
               Image.network(
                 meal.imageUrl,
@@ -23,7 +33,7 @@ class MealDetailsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 14),
               Text(
-                'Indgredients',
+                'Ingredients',
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
